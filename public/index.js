@@ -22,9 +22,11 @@ document.addEventListener('DOMContentLoaded', function () {
 				todoList.innerHTML = ''
 				data.forEach(todo => {
 					const li = document.createElement('li')
+          li.classList.add('task')        
 					li.innerHTML = `${todo.task} `
 					const deleteButton = document.createElement('button')
 					deleteButton.textContent = 'Delete Task'
+          deleteButton.classList.add('delete-btn') 
 					deleteButton.addEventListener('click', () => deleteTask(todo.id)) 
 					li.appendChild(deleteButton)
 					todoList.appendChild(li)
