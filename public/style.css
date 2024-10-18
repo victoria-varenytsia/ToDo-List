@@ -40,7 +40,7 @@ form {
 	outline: none;
 }
 
-.task-btn {
+.add-task-btn {
 	height: 50px;
 	font-size: 20px;
 	color: #fdf7d2;
@@ -51,7 +51,7 @@ form {
 	margin-left: 20px;
 }
 
-.delete-btn {
+.task-btn {
 	height: 50px;
 	font-size: 20px;
 	color: #742674;

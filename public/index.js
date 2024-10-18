@@ -15,6 +15,26 @@ document.addEventListener('DOMContentLoaded', function () {
 			})
 	}
 
+ function updateTask(id) {
+		const newTask = prompt('Edit your task:') 
+		if (newTask) {
+			fetch(`/edit/${id}`, {
+				method: 'PUT',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({ task: newTask }),
+			})
+				.then(response => response.json())
+				.then(data => {
+					if (data.success) {
+						fetchToDos()
+					}
+				})
+		}
+ }
+
+
 	function fetchToDos() {
 		fetch('/todos')
 			.then(response => response.json())
@@ -26,9 +46,15 @@ document.addEventListener('DOMContentLoaded', function () {
 					li.innerHTML = `${todo.task} `
 					const deleteButton = document.createElement('button')
 					deleteButton.textContent = 'Delete Task'
-          deleteButton.classList.add('delete-btn') 
+          deleteButton.classList.add('task-btn') 
 					deleteButton.addEventListener('click', () => deleteTask(todo.id)) 
 					li.appendChild(deleteButton)
+          const editButton = document.createElement('button')
+          editButton.textContent = "Edit Task"
+          editButton.classList.add('task-btn') 
+          editButton.addEventListener('click', () => updateTask(todo.id))
+li.appendChild(editButton)
+
 					todoList.appendChild(li)
 				})
 			})
