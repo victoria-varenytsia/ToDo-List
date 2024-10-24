@@ -55,9 +55,13 @@ app.post('/login', (req, res) => {
 				return res.status(400).json({ success: false, message: 'Unknown user' })
 			}
 			if (registeredUser.password === req.body.password) {
+				const token = jwt.sign(
+					{ userId: registeredUser.id },
+					proces.env.JWT_SECRET, {expiresIn: '1h'}
+				)
 				res
 					.status(200)
-					.json({ success: true, message: 'Logged in successfully' })
+					.json({ success: true, message: 'Logged in successfully' , token: token })
 			} else {
 				res.status(400).json({ success: false, message: 'Wrong password' })
 			}
@@ -67,8 +71,24 @@ app.post('/login', (req, res) => {
 		})
 })
 
+const authenticateToken =(req, res, next)=>{
+	const authHeader = req.headers['autorization']
+	const token = authHeader && authHeader.split(' ')[1]
 
-app.post('/add', (req, res) => {
+	if(!token){
+		return res.status(401).json({ success: false, message: 'No token provided' })
+	}
+
+	jwt.verify(token, proces.env.JWT_SECRET, (err, user) => {
+		if (err) {
+      return res.status(403).json({ success: false, message: 'Token is not valid' })
+    }
+    req.user = user
+    next()
+	})
+}
+
+app.post('/add',authenticateToken, (req, res) => {
 	const task = req.body.task
 	if (task) {
 		const newTask = new Task({ todo: task })
