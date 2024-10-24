@@ -1,5 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const nodemailer = require('nodemailer')
 const jwt = require('jsonwebtoken')
 const app = express()
 const port = 3000
@@ -24,8 +25,9 @@ const TaskSchema = new mongoose.Schema({
 })
 
 const UserSchema = new mongoose.Schema({
-	username: String,
-	password: String,
+	username: { type: String, required: true, unique: true },
+	password: { type: String, required: true, unique: true },
+	email: { type: String, required: true, unique: true },
 	tasks: [TaskSchema],
 })
 
@@ -44,6 +46,7 @@ app.get('/todos', (req, res) => {
 app.post('/register', (req, res) => {
 	const newUser = new User({
 		username: req.body.username,
+		email: req.body.email,
 		password: req.body.password,
 	})
 	newUser
@@ -155,6 +158,53 @@ app.put('/edit/:id', (req, res) => {
 			res.status(400).json({ success: false, message: 'Error updating task' })
 		})
 })
+
+app.post('/email', (req, res) => {
+	const email = req.body.email 
+
+	User.findOne({ email: email })
+		.then(user => {
+			if (!user) {
+				return res
+					.status(404)
+					.json({ success: false, message: 'User not found' })
+			}
+
+			const tasks = user.tasks.map(task => task.todo).join('\n')
+
+			const transporter = nodemailer.createTransport({
+				service: 'gmail',
+				auth: {
+					user: 'viktoriia.varenytsia.pz.2022@lpnu.ua',
+					pass: '28.12.2005', 
+				},
+			})
+
+			const mailOptions = {
+				from: 'viktoriia.varenytsia.pz.2022@lpnu.ua',
+				to: email,
+				subject: 'Lox',
+				text: 'Here are your tasks:\n' + tasks,
+			}
+
+			transporter.sendMail(mailOptions, (error, info) => {
+				if (error) {
+					console.error('Error sending email:', error)
+					return res
+						.status(400)
+						.json({ success: false, message: 'Error sending email' })
+				}
+				res
+					.status(200)
+					.json({ success: true, message: 'Email sent successfully' })
+			})
+		})
+		.catch(error => {
+			res.status(500).json({ success: false, message: 'Error finding user' })
+		})
+})
+
+
 
 app.listen(port, () => {
 	console.log(`server listening on port ${port}`)
