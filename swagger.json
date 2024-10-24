@@ -1,0 +1,38 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Todo API",
+		"version": "1.0.0",
+		"description": "API for managing tasks"
+	},
+	"paths": {
+		"/todos": {
+			"get": {
+				"summary": "Get list of all todos",
+				"responses": {
+					"200": {
+						"description": "A list of todos",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"type": "object",
+										"properties": {
+											"id": {
+												"type": "string"
+											},
+											"todo": {
+												"type": "string"
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
