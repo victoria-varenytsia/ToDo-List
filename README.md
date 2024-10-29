@@ -1,9 +1,9 @@
-# 📋 ToDo App
+#  ToDo-List
 
 A simple and efficient ToDo application that allows users to manage tasks seamlessly. Users can register, log in, add tasks, and even receive their tasks via email.
 
 
-## ✨ Features
+##  Features
 
 - **User Registration and Authentication**: Create and log in to your account.
 - **Task Management**: Add, edit, and delete tasks effortlessly.
@@ -12,18 +12,17 @@ A simple and efficient ToDo application that allows users to manage tasks seamle
 - **Data Security**: User data is securely stored using MongoDB.
 
 
-## ⚙️Technologies Used
+##  Technologies Used
 
 - Node.js
 - Express.js
 - MongoDB
 - Mongoose
-- JSON Web Token (JWT) for authentication
-- Nodemailer for sending emails
+- TypeORM
+- JSON Web Token (JWT)
+- Nodemailer
 
-Here's the complete installation section for your README, all in one code block:
-
-## 🚀 Installation
+##  Installation
 
 To get started with the ToDo App, follow these steps:
 
