@@ -33,6 +33,320 @@
 					}
 				}
 			}
+		},
+		"/register": {
+			"post": {
+				"summary": "Register a new user",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"username": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string",
+										"format": "email"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": ["username", "email", "password"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "User registered successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										},
+										"newUser": {
+											"type": "object",
+											"properties": {
+												"id": {
+													"type": "string"
+												},
+												"username": {
+													"type": "string"
+												},
+												"email": {
+													"type": "string",
+													"format": "email"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Username already exists"
+					}
+				}
+			}
+		},
+		"/login": {
+			"post": {
+				"summary": "Log in a user",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"username": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
+								},
+								"required": ["username", "password"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Logged in successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										},
+										"message": {
+											"type": "string"
+										},
+										"token": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Unknown user or wrong password"
+					}
+				}
+			}
+		},
+		"/add": {
+			"post": {
+				"summary": "Add a new task",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"task": {
+										"type": "string"
+									}
+								},
+								"required": ["task"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Task added successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										},
+										"newTask": {
+											"type": "object",
+											"properties": {
+												"id": {
+													"type": "string"
+												},
+												"todo": {
+													"type": "string"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Task not found"
+					}
+				}
+			}
+		},
+		"/delete/{id}": {
+			"delete": {
+				"summary": "Delete a task",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Task deleted successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										},
+										"message": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Error deleting task"
+					}
+				}
+			}
+		},
+		"/edit/{id}": {
+			"put": {
+				"summary": "Edit a task",
+				"parameters": [
+					{
+						"name": "id",
+						"in": "path",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"task": {
+										"type": "string"
+									}
+								},
+								"required": ["task"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Task updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										},
+										"message": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "Task not found"
+					},
+					"500": {
+						"description": "Server error"
+					}
+				}
+			}
+		},
+		"/email": {
+			"post": {
+				"summary": "Send tasks to user via email",
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string",
+										"format": "email"
+									},
+									"username": {
+										"type": "string"
+									}
+								},
+								"required": ["email", "username"]
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Email sent successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"success": {
+											"type": "boolean"
+										},
+										"message": {
+											"type": "string"
+										}
+									}
+								}
+							}
+						}
+					},
+					"404": {
+						"description": "User not found"
+					},
+					"400": {
+						"description": "Error sending email"
+					},
+					"500": {
+						"description": "Error finding user"
+					}
+				}
+			}
 		}
 	}
 }
